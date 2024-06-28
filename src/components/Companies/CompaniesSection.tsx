@@ -5,18 +5,19 @@ import { icons } from "../../assets";
 import { useCallback } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type CompaniesSectionProps = {}
 
-export function CompaniesSection({ }: CompaniesSectionProps) {
+export function CompaniesSection() {
   const companies = useCompanies();
 
   const onCompanyAdded = useCallback(() => {
     companies.refetch();
-  }, []);
+  }, [companies]);
 
   const onCompanyDeleted = useCallback(() => {
     companies.refetch();
-  }, []);
+  }, [companies]);
 
   if (companies.isLoading) {
     return <LoadingOverlay />

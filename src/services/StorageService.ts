@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { Company, CreateCompanyRequest, UpdateCompanyRequest } from "../models/company";
 import { LocalStorageService, StorageKey } from './LocalStorageService';
 
@@ -13,7 +13,7 @@ export class StorageService {
       throw new Error('Ya existe una empresa con el nombre especificado');
     }
 
-    const company: Company = { id: uuidv4(), name: request.name };
+    const company: Company = { id: uuid(), name: request.name };
     companies.push(company);
     LocalStorageService.setItem(this.STORAGE_KEY, companies);
     return company;
@@ -30,7 +30,7 @@ export class StorageService {
   }
 
   static updateCompany(request: UpdateCompanyRequest): Company {
-    let companies = this.getCompanies();
+    const companies = this.getCompanies();
 
     const companyIndex = companies.findIndex(company => company.id === request.id);
     if (companyIndex === -1) {

@@ -5,7 +5,7 @@ export type Company = {
   name: string;
 }
 
-export type CompanyListItem = Company & {}
+export type CompanyListItem = Company
 
 export type CreateCompanyRequest = {
   name: string;
