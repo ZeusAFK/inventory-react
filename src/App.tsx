@@ -21,6 +21,7 @@ import { SetActiveCompany } from "./services/CompaniesService";
 import { ExportImportSection } from "./components/ExportImport/ExportImportSection";
 import { useActiveDepartment } from "./hooks/useActiveDepartment";
 import { SetActiveDepartment } from "./services/DepartmentsService";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 function App() {
   const activeCompany = useActiveCompany();
@@ -87,6 +88,7 @@ function App() {
           </Group>
           <Group>
             <ExportImportSection />
+            <LanguageSwitcher />
             <ActionIcon
               onClick={switchColorScheme}
               variant="transparent"
