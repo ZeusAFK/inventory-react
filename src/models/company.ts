@@ -6,15 +6,15 @@ export type Company = {
   name: string;
 };
 
-export type CompanyListItem = Company;
+export const CreateCompanySchema = z.object({
+  name: z.string()
+});
 
-export type CreateCompanyRequest = {
-  name: string;
-};
 
 export const UpdateCompanySchema = z.object({
   id: z.string(),
-  name: z.string(),
+  name: z.string().min(5).max(100),
 });
-
+  
+export type CreateCompanyRequest = z.infer<typeof CreateCompanySchema>;
 export type UpdateCompanyRequest = z.infer<typeof UpdateCompanySchema>;

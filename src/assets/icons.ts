@@ -8,8 +8,15 @@ export {
   IoAlert as Error,
   IoSunny as ThemeLight,
   IoMoon as ThemeDark,
+  IoDownload as Export,
+  IoCloudUpload as Import,
+  IoCheckmark as Success,
 } from "react-icons/io5";
 
-export { FaCubes as Inventory, FaDoorOpen as Department } from "react-icons/fa";
+export {
+  FaCubes as Inventory,
+  FaDoorOpen as Department,
+  FaFile as File,
+} from "react-icons/fa";
 
 export { FaDog as Logo } from "react-icons/fa6";

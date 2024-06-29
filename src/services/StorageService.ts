@@ -14,11 +14,11 @@ export class StorageService {
     LocalStorageService.setItem("activeCompany", companyId);
   }
 
-  static getActiveCompany(): Company | undefined {
+  static getActiveCompany(): Company | null {
     const companyId = LocalStorageService.getItem<Guid>("activeCompany");
 
     if (companyId === null) {
-      return undefined;
+      return null;
     }
 
     const companies = this.getCompanies() || [];
@@ -26,7 +26,7 @@ export class StorageService {
       (company) => company.id === companyId
     );
 
-    return existingCompany;
+    return existingCompany ?? null;
   }
 
   static createCompany(request: CreateCompanyRequest): Company {

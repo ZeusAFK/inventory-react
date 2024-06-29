@@ -4,15 +4,40 @@ import { CompaniesList } from "./CompaniesList";
 import { icons } from "../../assets";
 import { useCallback } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
+import { Company } from "../../models/company";
+import { Guid } from "../../models/types";
+import { useActiveCompany } from "../../hooks/useActiveCompany";
 
-export function CompaniesSection() {
+export type CompaniesSectionProps = {
+  activeCompany: Company | null;
+  onActivateCompany: (companyId: Guid) => Promise<void>;
+};
+
+export function CompaniesSection({
+  activeCompany,
+  onActivateCompany,
+}: CompaniesSectionProps) {
   const companies = useCompanies();
+  const activeCompanyHook = useActiveCompany();
 
   const fetchCompanies = useCallback(async () => {
     if (!companies.isLoading && !companies.error) {
       await companies.reload();
     }
   }, [companies]);
+
+  const onCompanyUpdated = useCallback(
+    async (companyId: Guid) => {
+      if (activeCompany !== null && activeCompany.id === companyId) {
+        if (!activeCompanyHook.isLoading && !activeCompanyHook.error) {
+          activeCompanyHook.reload();
+        }
+      }
+
+      await fetchCompanies();
+    },
+    [activeCompany, activeCompanyHook, fetchCompanies]
+  );
 
   if (companies.isLoading) {
     return <LoadingOverlay />;
@@ -36,9 +61,11 @@ export function CompaniesSection() {
         <AddCompany onCompanyAdded={fetchCompanies} />
       </Group>
       <CompaniesList
+        activeCompany={activeCompany}
         companies={companies.companies}
         onCompanyDeleted={fetchCompanies}
-        onCompanyUpdated={fetchCompanies}
+        onCompanyUpdated={onCompanyUpdated}
+        onActivateCompany={onActivateCompany}
       />
     </Stack>
   );

@@ -22,12 +22,16 @@ export async function UpdateCompany(
 
 export async function GetActiveCompany(
   signal?: AbortSignal
-): Promise<Company | undefined> {
+): Promise<Company | null> {
   if (signal) {
     // DO NOTHING
   }
 
   return StorageService.getActiveCompany();
+}
+
+export async function SetActiveCompany(companyId: Guid): Promise<void> {
+  StorageService.setActiveCompany(companyId);
 }
 
 export async function DeleteCompany(companyId: Guid): Promise<void> {

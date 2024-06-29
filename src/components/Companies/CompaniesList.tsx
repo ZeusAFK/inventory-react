@@ -1,6 +1,6 @@
 import { DataTable, DataTableColumn } from "mantine-datatable";
-import { Company, CompanyListItem } from "../../models/company";
-import { ActionIcon, Group, Text } from "@mantine/core";
+import { Company } from "../../models/company";
+import { ActionIcon, Chip, Group, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import { icons } from "../../assets";
@@ -10,15 +10,19 @@ import { DeleteCompany } from "../../services/CompaniesService";
 import { EditCompany } from "./EditCompany";
 
 export type CompaniesListProps = {
-  companies: CompanyListItem[];
+  activeCompany: Company | null;
+  companies: Company[];
   onCompanyDeleted: () => Promise<void>;
-  onCompanyUpdated: () => Promise<void>;
+  onCompanyUpdated: (companyId: Guid) => Promise<void>;
+  onActivateCompany: (companyId: Guid) => Promise<void>;
 };
 
 export function CompaniesList({
+  activeCompany,
   companies,
   onCompanyDeleted,
   onCompanyUpdated,
+  onActivateCompany,
 }: CompaniesListProps) {
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +46,7 @@ export function CompaniesList({
         title: "Eliminar empresa",
         children: (
           <Text size="sm">
-            Estas seguro que deseas eliminar esta empresa? Esto tambien
+            Estas seguro que deseas eliminar esta empresa? Esto también
             eliminara todos los datos asociados a la misma.
           </Text>
         ),
@@ -71,6 +75,31 @@ export function CompaniesList({
   const columns = [
     { accessor: "name", title: "Nombre" },
     {
+      accessor: "activeCompany",
+      title: "Empresa activa",
+      textAlign: "center",
+      width: 150,
+      render: (company) => {
+        if (activeCompany !== null && activeCompany.id === company.id) {
+          return (
+            <Chip checked={true} color="green" variant="outline">
+              Activa
+            </Chip>
+          );
+        }
+
+        return (
+          <Chip
+            checked={false}
+            color="blue"
+            onClick={() => onActivateCompany(company.id)}
+          >
+            Activar
+          </Chip>
+        );
+      },
+    },
+    {
       accessor: "actions",
       title: "Acciones",
       textAlign: "center",
@@ -98,10 +127,10 @@ export function CompaniesList({
         </Group>
       ),
     },
-  ] satisfies DataTableColumn<CompanyListItem>[];
+  ] satisfies DataTableColumn<Company>[];
 
   return (
-    <DataTable<CompanyListItem>
+    <DataTable<Company>
       idAccessor="id"
       columns={columns}
       records={companies}

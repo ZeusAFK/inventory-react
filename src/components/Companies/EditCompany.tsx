@@ -9,10 +9,11 @@ import { zodResolver } from "@mantine/form";
 import { useCallback, useState } from "react";
 import { UpdateCompany } from "../../services/CompaniesService";
 import { modals } from "@mantine/modals";
+import { Guid } from "../../models/types";
 
 export type EditCompanyProps = {
   company: Company;
-  onCompanyUpdated: () => Promise<void>;
+  onCompanyUpdated: (companyId: Guid) => Promise<void>;
 };
 
 export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
@@ -26,14 +27,13 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
   const handleSubmit = useCallback(
     async (request: UpdateCompanyRequest) => {
       setError(null);
-      UpdateCompany(request)
-        .then(async () => {
-          await onCompanyUpdated();
-          modals.closeAll();
-        })
-        .catch((err) => {
-          setError(err.message || "Failed to update company");
-        });
+      try {
+        await UpdateCompany(request);
+        await onCompanyUpdated(request.id);
+        modals.closeAll();
+      } catch (err: unknown) {
+        setError((err as Error)?.message || "Failed to update company");
+      }
     },
     [onCompanyUpdated]
   );
@@ -45,7 +45,7 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
       initialValues={initialValues}
       onValidSubmit={handleSubmit}
     >
-      {({ form, renderSubmitButton }) => {
+      {({ form, renderSubmitButton, renderFormErrors }) => {
         return (
           <Stack>
             <TextInput
@@ -53,8 +53,10 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
               {...form.getInputProps("name")}
               error={error}
             />
+            {renderFormErrors()}
             {renderSubmitButton({
               text: "Guardar",
+              disableIfInvalid: true,
             })}
           </Stack>
         );

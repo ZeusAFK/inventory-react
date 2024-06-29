@@ -2,7 +2,7 @@ export type StorageKey =
   | "companies"
   | "departments"
   | "inventory"
-  | "item"
+  | "items"
   | "activeCompany";
 
 export class LocalStorageService {
@@ -39,10 +39,13 @@ export class LocalStorageService {
       }
     });
 
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = `inventory ${timestamp}.json`;
+
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: "application/json",
     });
-    return new File([blob], "localStorageBackup.json", {
+    return new File([blob], filename, {
       type: "application/json",
     });
   }
