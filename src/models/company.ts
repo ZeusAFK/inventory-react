@@ -7,14 +7,13 @@ export type Company = {
 };
 
 export const CreateCompanySchema = z.object({
-  name: z.string()
+  name: z.string().min(2).max(150),
 });
-
 
 export const UpdateCompanySchema = z.object({
   id: z.string(),
-  name: z.string().min(5).max(100),
+  name: z.string().min(2).max(150),
 });
-  
+
 export type CreateCompanyRequest = z.infer<typeof CreateCompanySchema>;
 export type UpdateCompanyRequest = z.infer<typeof UpdateCompanySchema>;

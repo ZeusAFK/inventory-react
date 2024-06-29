@@ -1,8 +1,13 @@
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions } from "@tanstack/react-query";
 
-import { GetCompanies } from "../services/CompaniesService";
+import { GetActiveCompany, GetCompanies } from "../services/CompaniesService";
 
 export const getCompaniesQueryOptions = queryOptions({
-  queryKey: ['companies'],
+  queryKey: ["companies"],
   queryFn: ({ signal }) => GetCompanies(signal),
+});
+
+export const getActiveCompanyQueryOptions = queryOptions({
+  queryKey: ["active-company"],
+  queryFn: ({ signal }) => GetActiveCompany(signal),
 });

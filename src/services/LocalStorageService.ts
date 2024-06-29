@@ -3,7 +3,8 @@ export type StorageKey =
   | "departments"
   | "inventory"
   | "items"
-  | "activeCompany";
+  | "activeCompany"
+  | "activeDepartment";
 
 export class LocalStorageService {
   static getItem<T>(key: StorageKey): T | null {

@@ -12,8 +12,10 @@ export function ExportImportSection() {
     const exportKeys: StorageKey[] = [
       "companies",
       "departments",
-      "activeCompany",
+      "inventory",
       "items",
+      "activeCompany",
+      "activeDepartment",
     ];
     const file = LocalStorageService.exportStorage(exportKeys);
 

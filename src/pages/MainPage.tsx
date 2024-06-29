@@ -4,13 +4,21 @@ import { CompaniesSection } from "../components/Companies";
 import { Company } from "../models/company";
 import { Guid } from "../models/types";
 import { DepartmentsSection } from "../components/Departments";
+import { Department } from "../models/department";
 
 export type MainPageProps = {
   activeCompany: Company | null;
+  activeDepartment: Department | null;
   onActivateCompany: (companyId: Guid) => Promise<void>;
+  onActivateDepartment: (departmentId: Guid) => Promise<void>;
 };
 
-export function MainPage({ activeCompany, onActivateCompany }: MainPageProps) {
+export function MainPage({
+  activeCompany,
+  activeDepartment,
+  onActivateCompany,
+  onActivateDepartment,
+}: MainPageProps) {
   return (
     <Container size="xl" py="lg">
       <Tabs defaultValue="companies" variant="outline">
@@ -31,7 +39,7 @@ export function MainPage({ activeCompany, onActivateCompany }: MainPageProps) {
           <Tabs.Tab
             value="inventory"
             leftSection={<icons.Inventory />}
-            disabled={activeCompany === null}
+            disabled={activeCompany === null || activeDepartment === null}
           >
             Inventario
           </Tabs.Tab>
@@ -44,15 +52,23 @@ export function MainPage({ activeCompany, onActivateCompany }: MainPageProps) {
           />
         </Tabs.Panel>
 
-        <Tabs.Panel value="departments" py="md">
-          <DepartmentsSection activeCompany={activeCompany!} />
+        <Tabs.Panel value="departments" py="lg" px="sm">
+          {activeCompany !== null ? (
+            <DepartmentsSection
+              activeCompany={activeCompany}
+              activeDepartment={activeDepartment}
+              onActivateDepartment={onActivateDepartment}
+            />
+          ) : (
+            <></>
+          )}
         </Tabs.Panel>
 
-        <Tabs.Panel value="items" py="md">
+        <Tabs.Panel value="items" py="lg" px="sm">
           Items tab content
         </Tabs.Panel>
 
-        <Tabs.Panel value="inventory" py="md">
+        <Tabs.Panel value="inventory" py="lg" px="sm">
           Inventory tab content
         </Tabs.Panel>
       </Tabs>

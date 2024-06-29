@@ -19,9 +19,12 @@ import { useActiveCompany } from "./hooks/useActiveCompany";
 import { Guid } from "./models/types";
 import { SetActiveCompany } from "./services/CompaniesService";
 import { ExportImportSection } from "./components/ExportImport/ExportImportSection";
+import { useActiveDepartment } from "./hooks/useActiveDepartment";
+import { SetActiveDepartment } from "./services/DepartmentsService";
 
 function App() {
   const activeCompany = useActiveCompany();
+  const activeDepartment = useActiveDepartment();
   const { t } = useTranslation();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
 
@@ -29,24 +32,37 @@ function App() {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   }, [colorScheme, setColorScheme]);
 
+  const handleActivateDepartment = useCallback(
+    async (departmentId: Guid) => {
+      await SetActiveDepartment(departmentId);
+      if (!activeDepartment.isLoading && !activeDepartment.error) {
+        activeDepartment.reload();
+      }
+    },
+    [activeDepartment]
+  );
+
   const handleActivateCompany = useCallback(
     async (companyId: Guid) => {
       await SetActiveCompany(companyId);
       if (!activeCompany.isLoading && !activeCompany.error) {
         activeCompany.reload();
       }
+      await handleActivateDepartment("");
     },
-    [activeCompany]
+    [activeCompany, handleActivateDepartment]
   );
 
-  if (activeCompany.isLoading) {
+  if (activeCompany.isLoading || activeDepartment.isLoading) {
     return <LoadingOverlay />;
   }
 
-  if (activeCompany.error) {
+  if (activeCompany.error || activeDepartment.error) {
     return (
       <Alert color="red">
-        <Text>{activeCompany.error.message}</Text>
+        <Text>
+          {activeCompany?.error?.message ?? activeDepartment?.error?.message}
+        </Text>
       </Alert>
     );
   }
@@ -61,6 +77,11 @@ function App() {
             {activeCompany.company !== null && (
               <Badge variant="dot" color="green" size="xl">
                 {activeCompany.company.name}
+              </Badge>
+            )}
+            {activeDepartment.department !== null && (
+              <Badge variant="dot" color="green" size="xl">
+                {activeDepartment.department.name}
               </Badge>
             )}
           </Group>
@@ -84,7 +105,9 @@ function App() {
       <AppShell.Main>
         <MainPage
           activeCompany={activeCompany.company}
+          activeDepartment={activeDepartment.department}
           onActivateCompany={handleActivateCompany}
+          onActivateDepartment={handleActivateDepartment}
         />
       </AppShell.Main>
     </AppShell>

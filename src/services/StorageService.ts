@@ -4,11 +4,17 @@ import {
   CreateCompanyRequest,
   UpdateCompanyRequest,
 } from "../models/company";
+import {
+  Department,
+  CreateDepartmentRequest,
+  UpdateDepartmentRequest,
+} from "../models/department";
 import { LocalStorageService, StorageKey } from "./LocalStorageService";
 import { Guid } from "../models/types";
 
 export class StorageService {
-  private static readonly STORAGE_KEY: StorageKey = "companies";
+  private static readonly COMPANY_STORAGE_KEY: StorageKey = "companies";
+  private static readonly DEPARTMENT_STORAGE_KEY: StorageKey = "departments";
 
   static setActiveCompany(companyId: Guid): void {
     LocalStorageService.setItem("activeCompany", companyId);
@@ -41,18 +47,20 @@ export class StorageService {
 
     const company: Company = { id: uuid(), name: request.name };
     companies.push(company);
-    LocalStorageService.setItem(this.STORAGE_KEY, companies);
+    LocalStorageService.setItem(this.COMPANY_STORAGE_KEY, companies);
     return company;
   }
 
   static getCompanies(): Company[] {
-    return LocalStorageService.getItem<Company[]>(this.STORAGE_KEY) || [];
+    return (
+      LocalStorageService.getItem<Company[]>(this.COMPANY_STORAGE_KEY) || []
+    );
   }
 
   static deleteCompany(companyId: string): void {
     let companies = this.getCompanies();
     companies = companies.filter((company) => company.id !== companyId);
-    LocalStorageService.setItem(this.STORAGE_KEY, companies);
+    LocalStorageService.setItem(this.COMPANY_STORAGE_KEY, companies);
   }
 
   static updateCompany(request: UpdateCompanyRequest): Company {
@@ -73,8 +81,105 @@ export class StorageService {
     }
 
     companies[companyIndex].name = request.name;
-    LocalStorageService.setItem(this.STORAGE_KEY, companies);
+    LocalStorageService.setItem(this.COMPANY_STORAGE_KEY, companies);
 
     return companies[companyIndex];
+  }
+
+  static setActiveDepartment(departmentId: Guid): void {
+    LocalStorageService.setItem("activeDepartment", departmentId);
+  }
+
+  static getActiveDepartment(): Department | null {
+    const departmentId = LocalStorageService.getItem<Guid>("activeDepartment");
+
+    if (departmentId === null) {
+      return null;
+    }
+
+    const departments = this.getDepartments() || [];
+    const existingDepartment = departments.find(
+      (department) => department.id === departmentId
+    );
+
+    return existingDepartment ?? null;
+  }
+
+  static createDepartment(request: CreateDepartmentRequest): Department {
+    const departments = this.getDepartments() || [];
+
+    const existingDepartment = departments.find(
+      (department) =>
+        department.name === request.name &&
+        department.companyId === request.companyId
+    );
+    if (existingDepartment) {
+      throw new Error(
+        "Ya existe un departamento con el nombre especificado en esta empresa"
+      );
+    }
+
+    const department: Department = {
+      id: uuid(),
+      companyId: request.companyId,
+      name: request.name,
+    };
+    departments.push(department);
+    LocalStorageService.setItem(this.DEPARTMENT_STORAGE_KEY, departments);
+    return department;
+  }
+
+  static getDepartments(): Department[] {
+    return (
+      LocalStorageService.getItem<Department[]>(this.DEPARTMENT_STORAGE_KEY) ||
+      []
+    );
+  }
+
+  static getDepartmentsByCompany(companyId: Guid): Department[] {
+    const departments =
+      LocalStorageService.getItem<Department[]>(this.DEPARTMENT_STORAGE_KEY) ||
+      [];
+    const companyDepartments = departments.filter(
+      (x) => x.companyId === companyId
+    );
+
+    return companyDepartments;
+  }
+
+  static deleteDepartment(departmentId: string): void {
+    let departments = this.getDepartments();
+    departments = departments.filter(
+      (department) => department.id !== departmentId
+    );
+    LocalStorageService.setItem(this.DEPARTMENT_STORAGE_KEY, departments);
+  }
+
+  static updateDepartment(request: UpdateDepartmentRequest): Department {
+    const departments = this.getDepartments();
+
+    const departmentIndex = departments.findIndex(
+      (department) => department.id === request.id
+    );
+    if (departmentIndex === -1) {
+      throw new Error("Departamento no encontrado");
+    }
+
+    const existingDepartmentWithName = departments.find(
+      (department) =>
+        department.name === request.name &&
+        department.companyId === request.companyId &&
+        department.id !== request.id
+    );
+    if (existingDepartmentWithName) {
+      throw new Error(
+        "Ya existe un departamento con el nombre especificado en esta empresa"
+      );
+    }
+
+    departments[departmentIndex].name = request.name;
+    LocalStorageService.setItem(this.DEPARTMENT_STORAGE_KEY, departments);
+
+    return departments[departmentIndex];
   }
 }

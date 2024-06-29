@@ -32,7 +32,7 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
         await onCompanyUpdated(request.id);
         modals.closeAll();
       } catch (err: unknown) {
-        setError((err as Error)?.message || "Failed to update company");
+        setError((err as Error).message || "Failed to update company");
       }
     },
     [onCompanyUpdated]
@@ -45,7 +45,7 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
       initialValues={initialValues}
       onValidSubmit={handleSubmit}
     >
-      {({ form, renderSubmitButton, renderFormErrors }) => {
+      {({ form, renderSubmitButton }) => {
         return (
           <Stack>
             <TextInput
@@ -53,7 +53,6 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
               {...form.getInputProps("name")}
               error={error}
             />
-            {renderFormErrors()}
             {renderSubmitButton({
               text: "Guardar",
               disableIfInvalid: true,

@@ -1,24 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { Company } from "../models/company";
-import { getActiveCompanyQueryOptions } from "../queries/company";
+import { Department } from "../models/department";
+import { getActiveDepartmentQueryOptions } from "../queries/department";
 
-type ActiveCompanyResponse =
+type ActiveDepartmentResponse =
   | { isLoading: true }
   | {
       isLoading: false;
-      company: Company | null;
+      department: Department | null;
       error: null;
       reload: () => void;
     }
   | { isLoading: false; error: Error };
 
-export function useActiveCompany(): ActiveCompanyResponse {
+export function useActiveDepartment(): ActiveDepartmentResponse {
   const {
-    data: company,
+    data: department,
     error,
     isLoading,
     refetch,
-  } = useQuery(getActiveCompanyQueryOptions);
+  } = useQuery(getActiveDepartmentQueryOptions);
 
   async function reload() {
     await refetch();
@@ -35,7 +35,7 @@ export function useActiveCompany(): ActiveCompanyResponse {
   return {
     isLoading,
     error,
-    company: company ?? null,
+    department: department ?? null,
     reload,
   };
 }
