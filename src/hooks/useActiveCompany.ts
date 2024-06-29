@@ -1,24 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { Company } from "../models/company";
-import { getCompaniesQueryOptions } from "../queries/company";
+import { getActiveCompanyQueryOptions } from "../queries/active-company";
 
-type CompaniesResponse =
+type ActiveCompanyResponse =
   | { isLoading: true }
-  | {
-      isLoading: false;
-      companies: Company[];
-      error: null;
-      reload: () => Promise<void>;
-    }
+  | { isLoading: false; company: Company; error: null; reload: () => void }
   | { isLoading: false; error: Error };
 
-export function useCompanies(): CompaniesResponse {
+export function useActiveCompany(): ActiveCompanyResponse {
   const {
-    data: companies,
+    data: company,
     error,
     isLoading,
     refetch,
-  } = useQuery(getCompaniesQueryOptions);
+  } = useQuery(getActiveCompanyQueryOptions);
 
   async function reload() {
     await refetch();
@@ -32,14 +27,14 @@ export function useCompanies(): CompaniesResponse {
     return { isLoading: false, error };
   }
 
-  if (!companies) {
-    throw new Error("Failed to get companies");
+  if (!company) {
+    throw new Error("Failed to get active company");
   }
 
   return {
     isLoading,
     error,
-    companies,
+    company,
     reload,
   };
 }

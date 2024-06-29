@@ -1,5 +1,4 @@
 export {
-  IoLogoOctocat as Logo,
   IoBusiness as Company,
   IoAddCircleOutline as Add,
   IoCube as Item,
@@ -7,9 +6,10 @@ export {
   IoTrash as Delete,
   IoWarning as Warning,
   IoAlert as Error,
-} from 'react-icons/io5';
+  IoSunny as ThemeLight,
+  IoMoon as ThemeDark,
+} from "react-icons/io5";
 
-export {
-  FaCubes as Inventory,
-  FaDoorOpen as Department,
-} from "react-icons/fa";
+export { FaCubes as Inventory, FaDoorOpen as Department } from "react-icons/fa";
+
+export { FaDog as Logo } from "react-icons/fa6";

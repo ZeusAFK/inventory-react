@@ -1,4 +1,9 @@
-export type StorageKey = 'companies' | 'departments' | 'inventory' | 'item';
+export type StorageKey =
+  | "companies"
+  | "departments"
+  | "inventory"
+  | "item"
+  | "activeCompany";
 
 export class LocalStorageService {
   static getItem<T>(key: StorageKey): T | null {
@@ -20,6 +25,7 @@ export class LocalStorageService {
   }
 
   static exportStorage(exportKeys: StorageKey[]): File {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const exportData: { [key in StorageKey]?: any } = {};
 
     exportKeys.forEach((key) => {
@@ -33,8 +39,12 @@ export class LocalStorageService {
       }
     });
 
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-    return new File([blob], 'localStorageBackup.json', { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+      type: "application/json",
+    });
+    return new File([blob], "localStorageBackup.json", {
+      type: "application/json",
+    });
   }
 
   static importStorage(file: File): Promise<void> {
@@ -48,11 +58,11 @@ export class LocalStorageService {
           });
           resolve();
         } catch (error) {
-          reject(new Error('Failed to parse import file'));
+          reject(new Error("Failed to parse import file"));
         }
       };
       reader.onerror = () => {
-        reject(new Error('Failed to read import file'));
+        reject(new Error("Failed to read import file"));
       };
       reader.readAsText(file);
     });

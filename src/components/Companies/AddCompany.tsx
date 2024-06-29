@@ -4,24 +4,24 @@ import { useCallback, useState } from "react";
 import { CreateCompany } from "../../services/CompaniesService";
 
 export type AddCompanyProps = {
-  onCompanyAdded: () => void;
-}
+  onCompanyAdded: () => Promise<void>;
+};
 
 export function AddCompany({ onCompanyAdded }: AddCompanyProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCreateCompany = useCallback(() => {
+  const handleCreateCompany = useCallback(async () => {
     setLoading(true);
     setError(null);
     CreateCompany({ name: value })
-      .then(() => {
-        setValue('');
-        onCompanyAdded();
+      .then(async () => {
+        setValue("");
+        await onCompanyAdded();
       })
       .catch((err) => {
-        setError(err.message || 'Failed to create company');
+        setError(err.message || "Failed to create company");
       })
       .finally(() => {
         setLoading(false);
@@ -41,7 +41,7 @@ export function AddCompany({ onCompanyAdded }: AddCompanyProps) {
         onClick={handleCreateCompany}
         disabled={!value || loading}
       >
-        {loading ? 'Creando...' : 'Crear empresa'}
+        {loading ? "Creando..." : "Crear empresa"}
       </Button>
     </Group>
   );
