@@ -42,7 +42,7 @@ export class StorageService {
       (company) => company.name === request.name
     );
     if (existingCompany) {
-      throw new Error("Ya existe una empresa con el nombre especificado");
+      throw new Error("sections.company.errors.companyAlreadyExists");
     }
 
     const company: Company = { id: uuid(), name: request.name };
@@ -70,14 +70,14 @@ export class StorageService {
       (company) => company.id === request.id
     );
     if (companyIndex === -1) {
-      throw new Error("Empresa no encontrada");
+      throw new Error("sections.company.errors.companyNotFound");
     }
 
     const existingCompanyWithName = companies.find(
       (company) => company.name === request.name && company.id !== request.id
     );
     if (existingCompanyWithName) {
-      throw new Error("Ya existe una empresa con el nombre especificado");
+      throw new Error("sections.company.errors.companyAlreadyExists");
     }
 
     companies[companyIndex].name = request.name;
@@ -114,9 +114,7 @@ export class StorageService {
         department.companyId === request.companyId
     );
     if (existingDepartment) {
-      throw new Error(
-        "Ya existe un departamento con el nombre especificado en esta empresa"
-      );
+      throw new Error("sections.departments.errors.departmentAlreadyExists");
     }
 
     const department: Department = {
@@ -162,7 +160,7 @@ export class StorageService {
       (department) => department.id === request.id
     );
     if (departmentIndex === -1) {
-      throw new Error("Departamento no encontrado");
+      throw new Error("sections.departments.errors.departmentNotFound");
     }
 
     const existingDepartmentWithName = departments.find(
@@ -172,9 +170,7 @@ export class StorageService {
         department.id !== request.id
     );
     if (existingDepartmentWithName) {
-      throw new Error(
-        "Ya existe un departamento con el nombre especificado en esta empresa"
-      );
+      throw new Error("sections.departments.errors.departmentNotFound");
     }
 
     departments[departmentIndex].name = request.name;

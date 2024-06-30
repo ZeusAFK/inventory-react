@@ -5,6 +5,7 @@ import { Company } from "../models/company";
 import { Guid } from "../models/types";
 import { DepartmentsSection } from "../components/Departments";
 import { Department } from "../models/department";
+import { useTranslation } from "react-i18next";
 
 export type MainPageProps = {
   activeCompany: Company | null;
@@ -19,29 +20,30 @@ export function MainPage({
   onActivateCompany,
   onActivateDepartment,
 }: MainPageProps) {
+  const { t } = useTranslation();
   return (
     <Container size="xl" py="lg">
       <Tabs defaultValue="companies" variant="outline">
         <Tabs.List>
           <Tabs.Tab value="companies" leftSection={<icons.Company />}>
-            Empresas
+            {t("tabs.companies")}
           </Tabs.Tab>
           <Tabs.Tab
             value="departments"
             leftSection={<icons.Department />}
             disabled={activeCompany === null}
           >
-            Areas
+            {t("tabs.departments")}
           </Tabs.Tab>
           <Tabs.Tab value="items" leftSection={<icons.Item />}>
-            Artículos
+            {t("tabs.items")}
           </Tabs.Tab>
           <Tabs.Tab
             value="inventory"
             leftSection={<icons.Inventory />}
             disabled={activeCompany === null || activeDepartment === null}
           >
-            Inventario
+            {t("tabs.inventory")}
           </Tabs.Tab>
         </Tabs.List>
 

@@ -8,6 +8,7 @@ import { DepartmentsList } from "./DepartmentsList";
 import { Department } from "../../models/department";
 import { Guid } from "../../models/types";
 import { useActiveDepartment } from "../../hooks/useActiveDepartment";
+import { useTranslation } from "react-i18next";
 
 export type DepartmentsSectionProps = {
   activeCompany: Company;
@@ -20,6 +21,7 @@ export function DepartmentsSection({
   activeDepartment,
   onActivateDepartment,
 }: DepartmentsSectionProps) {
+  const { t } = useTranslation();
   const departments = useCompanyDepartments(activeCompany.id);
   const activeDepartmentHook = useActiveDepartment();
 
@@ -59,7 +61,9 @@ export function DepartmentsSection({
       <Group justify="space-between">
         <Group>
           <icons.Department size={20} />
-          <Title order={3}>Administrar areas en {activeCompany.name}</Title>
+          <Title order={3}>
+            {t("sections.departments.title", { company: activeCompany.name })}
+          </Title>
         </Group>
         <AddDepartment
           activeCompany={activeCompany}

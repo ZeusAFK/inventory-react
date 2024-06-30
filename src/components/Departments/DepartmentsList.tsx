@@ -8,6 +8,7 @@ import { Guid } from "../../models/types";
 import { Department } from "../../models/department";
 import { DeleteDepartment } from "../../services/DepartmentsService";
 import { EditDepartment } from "./EditDepartment";
+import { useTranslation } from "react-i18next";
 
 export type DepartmentsListProps = {
   activeDepartment: Department | null;
@@ -24,12 +25,15 @@ export function DepartmentsList({
   onDepartmentDeleted,
   onDepartmentUpdated,
 }: DepartmentsListProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const handleDepartmentUpdate = useCallback(
     (department: Department) => {
       modals.open({
-        title: `Editar ${department.name}`,
+        title: t("sections.departments.edit.title", {
+          department: department.name,
+        }),
         children: (
           <EditDepartment
             department={department}
@@ -40,20 +44,20 @@ export function DepartmentsList({
         closeOnClickOutside: false,
       });
     },
-    [onDepartmentUpdated]
+    [onDepartmentUpdated, t]
   );
 
   const handleDepartmentDelete = useCallback(
     (departmentId: Guid) => {
       modals.openConfirmModal({
-        title: "Eliminar area",
+        title: t("sections.departments.delete.title"),
         children: (
-          <Text size="sm">
-            Estas seguro que deseas eliminar esta area? Esto también eliminara
-            todos los datos asociados a la misma.
-          </Text>
+          <Text size="sm">{t("sections.departments.delete.warning")}</Text>
         ),
-        labels: { confirm: "Eliminar area", cancel: "Cancelar" },
+        labels: {
+          confirm: t("sections.departments.buttons.deleteDepartment"),
+          cancel: t("buttons.cancel"),
+        },
         confirmProps: { color: "red" },
         onConfirm: () => {
           setLoading(true);
@@ -72,14 +76,14 @@ export function DepartmentsList({
         },
       });
     },
-    [onDepartmentDeleted]
+    [onDepartmentDeleted, t]
   );
 
   const columns = [
-    { accessor: "name", title: "Nombre" },
+    { accessor: "name", title: t("sections.departments.headers.name") },
     {
       accessor: "activeDepartment",
-      title: "Empresa activa",
+      title: t("sections.departments.headers.active"),
       textAlign: "center",
       width: 150,
       render: (department) => {
@@ -89,7 +93,7 @@ export function DepartmentsList({
         ) {
           return (
             <Chip checked={true} color="green" variant="outline">
-              Activa
+              {t("sections.departments.actions.active")}
             </Chip>
           );
         }
@@ -100,14 +104,14 @@ export function DepartmentsList({
             color="blue"
             onClick={() => onActivateDepartment(department.id)}
           >
-            Activar
+            {t("sections.departments.actions.activate")}
           </Chip>
         );
       },
     },
     {
       accessor: "actions",
-      title: "Acciones",
+      title: t("sections.departments.headers.actions"),
       textAlign: "center",
       width: 100,
       render: (department) => (

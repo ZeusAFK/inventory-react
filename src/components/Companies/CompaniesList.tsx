@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { Guid } from "../../models/types";
 import { DeleteCompany } from "../../services/CompaniesService";
 import { EditCompany } from "./EditCompany";
+import { useTranslation } from "react-i18next";
 
 export type CompaniesListProps = {
   activeCompany: Company | null;
@@ -24,12 +25,13 @@ export function CompaniesList({
   onCompanyUpdated,
   onActivateCompany,
 }: CompaniesListProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const handleCompanyUpdate = useCallback(
     (company: Company) => {
       modals.open({
-        title: `Editar ${company.name}`,
+        title: t("sections.company.edit.title", { company: company.name }),
         children: (
           <EditCompany company={company} onCompanyUpdated={onCompanyUpdated} />
         ),
@@ -37,21 +39,20 @@ export function CompaniesList({
         closeOnClickOutside: false,
       });
     },
-    [onCompanyUpdated]
+    [onCompanyUpdated, t]
   );
 
   const handleCompanyDelete = useCallback(
     (companyId: Guid) => {
       modals.openConfirmModal({
-        title: "Eliminar empresa",
-        children: (
-          <Text size="sm">
-            Estas seguro que deseas eliminar esta empresa? Esto también
-            eliminara todos los datos asociados a la misma.
-          </Text>
-        ),
-        labels: { confirm: "Eliminar empresa", cancel: "Cancelar" },
+        title: t("sections.company.delete.title"),
+        children: <Text size="sm">{t("sections.company.delete.warning")}</Text>,
+        labels: {
+          confirm: t("sections.company.buttons.deleteCompany"),
+          cancel: t("buttons.cancel"),
+        },
         confirmProps: { color: "red" },
+        closeOnClickOutside: false,
         onConfirm: () => {
           setLoading(true);
           DeleteCompany(companyId)
@@ -69,21 +70,21 @@ export function CompaniesList({
         },
       });
     },
-    [onCompanyDeleted]
+    [onCompanyDeleted, t]
   );
 
   const columns = [
-    { accessor: "name", title: "Nombre" },
+    { accessor: "name", title: t("sections.company.headers.name") },
     {
       accessor: "activeCompany",
-      title: "Empresa activa",
+      title: t("sections.company.headers.active"),
       textAlign: "center",
       width: 150,
       render: (company) => {
         if (activeCompany !== null && activeCompany.id === company.id) {
           return (
             <Chip checked={true} color="green" variant="outline">
-              Activa
+              {t("sections.company.actions.active")}
             </Chip>
           );
         }
@@ -94,14 +95,14 @@ export function CompaniesList({
             color="blue"
             onClick={() => onActivateCompany(company.id)}
           >
-            Activar
+            {t("sections.company.actions.activate")}
           </Chip>
         );
       },
     },
     {
       accessor: "actions",
-      title: "Acciones",
+      title: t("sections.company.headers.actions"),
       textAlign: "center",
       width: 100,
       render: (company) => (

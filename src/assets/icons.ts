@@ -11,6 +11,7 @@ export {
   IoDownload as Export,
   IoCloudUpload as Import,
   IoCheckmark as Success,
+  IoLanguage as Language,
 } from "react-icons/io5";
 
 export {

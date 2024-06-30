@@ -10,6 +10,7 @@ import { modals } from "@mantine/modals";
 import { ValidatedForm } from "../ValidatedForm";
 import { zodResolver } from "@mantine/form";
 import { Stack, TextInput } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 export type EditDepartmentProps = {
   department: Department;
@@ -20,6 +21,7 @@ export function EditDepartment({
   department,
   onDepartmentUpdated,
 }: EditDepartmentProps) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const initialValues = {
@@ -53,12 +55,12 @@ export function EditDepartment({
         return (
           <Stack>
             <TextInput
-              label="Nombre"
+              label={t("sections.departments.edit.labels.name")}
               {...form.getInputProps("name")}
               error={error}
             />
             {renderSubmitButton({
-              text: "Guardar",
+              text: t("buttons.save"),
               disableIfInvalid: true,
             })}
           </Stack>

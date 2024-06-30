@@ -10,6 +10,7 @@ import { useCallback, useState } from "react";
 import { UpdateCompany } from "../../services/CompaniesService";
 import { modals } from "@mantine/modals";
 import { Guid } from "../../models/types";
+import { useTranslation } from "react-i18next";
 
 export type EditCompanyProps = {
   company: Company;
@@ -17,6 +18,7 @@ export type EditCompanyProps = {
 };
 
 export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const initialValues = {
@@ -49,12 +51,12 @@ export function EditCompany({ company, onCompanyUpdated }: EditCompanyProps) {
         return (
           <Stack>
             <TextInput
-              label="Nombre"
+              label={t("sections.company.edit.labels.name")}
               {...form.getInputProps("name")}
               error={error}
             />
             {renderSubmitButton({
-              text: "Guardar",
+              text: t("buttons.save"),
               disableIfInvalid: true,
             })}
           </Stack>

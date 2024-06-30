@@ -7,6 +7,7 @@ import { useCompanies } from "../../hooks/useCompanies";
 import { Company } from "../../models/company";
 import { Guid } from "../../models/types";
 import { useActiveCompany } from "../../hooks/useActiveCompany";
+import { useTranslation } from "react-i18next";
 
 export type CompaniesSectionProps = {
   activeCompany: Company | null;
@@ -17,6 +18,7 @@ export function CompaniesSection({
   activeCompany,
   onActivateCompany,
 }: CompaniesSectionProps) {
+  const { t } = useTranslation();
   const companies = useCompanies();
   const activeCompanyHook = useActiveCompany();
 
@@ -56,7 +58,7 @@ export function CompaniesSection({
       <Group justify="space-between">
         <Group>
           <icons.Company size={20} />
-          <Title order={3}>Administrar empresas</Title>
+          <Title order={3}>{t("sections.company.title")}</Title>
         </Group>
         <AddCompany onCompanyAdded={fetchCompanies} />
       </Group>

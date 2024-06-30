@@ -1,3 +1,86 @@
 {
-  "title": "Gestión de inventario"
+  "buttons": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "import": "Importar",
+    "export": "Exportar"
+  },
+  "title": "Gestión de inventario",
+  "tabs": {
+    "companies": "Empresas",
+    "departments": "Areas",
+    "items": "Articulos",
+    "inventory": "Inventario"
+  },
+  "sections": {
+    "company": {
+      "title": "Administrar empresas",
+      "headers": {
+        "name": "Nombre",
+        "active": "Activar",
+        "actions": "Acciones"
+      },
+      "actions": {
+        "active": "Activa",
+        "activate": "Activar"
+      },
+      "placeholders": {
+        "companyName": "Nombre de la empresa"
+      },
+      "buttons": {
+        "createCompany": "Crear empresa",
+        "deleteCompany": "Eliminar empresa"
+      },
+      "errors": {
+        "companyAlreadyExists": "Ya existe una empresa con el nombre especificado",
+        "companyNotFound": "Empresa no encontrada"
+      },
+      "edit": {
+        "title": "Editar {{company}}",
+        "labels": {
+          "name": "Nombre"
+        },
+        "placeholders": {
+          "name": "Nombre de la empresa"
+        }
+      },
+      "delete": {
+        "title": "Eliminar empresa",
+        "warning": "Estas seguro que deseas eliminar esta empresa? Esto también eliminara todos los datos asociados a la misma."
+      }
+    },
+    "departments": {
+      "title": "Administrar areas en {{company}}",
+      "headers": {
+        "name": "Nombre",
+        "active": "Activar",
+        "actions": "Acciones"
+      },
+      "actions": {
+        "active": "Activa",
+        "activate": "Activar"
+      },
+      "errors": {
+        "departmentAlreadyExists": "Ya existe un departamento con el nombre especificado",
+        "departmentNotFound": "Departamento no encontrado"
+      },
+      "buttons": {
+        "deleteDepartment": "Eliminar area",
+        "createDepartment": "Crear area"
+      },
+      "placeholders": {
+        "departmentName": "Nombre del area"
+      },
+      "delete": {
+        "title": "Eliminar area",
+        "warning": "Estas seguro que deseas eliminar esta area? Esto también eliminara todos los datos asociados a la misma."
+      },
+      "edit": {
+        "title": "Editar {{department}}",
+        "labels": {
+          "name": "Nombre"
+        }
+      }
+    }
+  }
 }

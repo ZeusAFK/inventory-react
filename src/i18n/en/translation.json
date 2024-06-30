@@ -1,0 +1,86 @@
+{
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "import": "Import",
+    "export": "Export"
+  },
+  "title": "Inventory Management",
+  "tabs": {
+    "companies": "Companies",
+    "departments": "Departments",
+    "items": "Items",
+    "inventory": "Inventory"
+  },
+  "sections": {
+    "company": {
+      "title": "Manage Companies",
+      "headers": {
+        "name": "Name",
+        "active": "Activate",
+        "actions": "Actions"
+      },
+      "actions": {
+        "active": "Active",
+        "activate": "Activate"
+      },
+      "placeholders": {
+        "companyName": "Company Name"
+      },
+      "buttons": {
+        "createCompany": "Create Company",
+        "deleteCompany": "Delete Company"
+      },
+      "errors": {
+        "companyAlreadyExists": "A company with the specified name already exists",
+        "companyNotFound": "Company not found"
+      },
+      "edit": {
+        "title": "Edit {{company}}",
+        "labels": {
+          "name": "Name"
+        },
+        "placeholders": {
+          "name": "Company Name"
+        }
+      },
+      "delete": {
+        "title": "Delete Company",
+        "warning": "Are you sure you want to delete this company? This will also delete all associated data."
+      }
+    },
+    "departments": {
+      "title": "Manage Departments in {{company}}",
+      "headers": {
+        "name": "Name",
+        "active": "Activate",
+        "actions": "Actions"
+      },
+      "actions": {
+        "active": "Active",
+        "activate": "Activate"
+      },
+      "errors": {
+        "departmentAlreadyExists": "A department with the specified name already exists",
+        "departmentNotFound": "Department not found"
+      },
+      "buttons": {
+        "deleteDepartment": "Delete Department",
+        "createDepartment": "Create Department"
+      },
+      "placeholders": {
+        "departmentName": "Department Name"
+      },
+      "delete": {
+        "title": "Delete Department",
+        "warning": "Are you sure you want to delete this department? This will also delete all associated data."
+      },
+      "edit": {
+        "title": "Edit {{department}}",
+        "labels": {
+          "name": "Name"
+        }
+      }
+    }
+  }
+}

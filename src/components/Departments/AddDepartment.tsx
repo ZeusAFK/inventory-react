@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import { CreateDepartment } from "../../services/DepartmentsService";
 import { icons } from "../../assets";
 import { Company } from "../../models/company";
+import { useTranslation } from "react-i18next";
 
 export type AddDepartmentProps = {
   activeCompany: Company;
@@ -19,6 +20,7 @@ export function AddDepartment({
   activeCompany,
   onDepartmentAdded,
 }: AddDepartmentProps) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const initialValues: CreateDepartmentRequest = {
@@ -33,10 +35,10 @@ export function AddDepartment({
         await CreateDepartment(request);
         await onDepartmentAdded();
       } catch (err) {
-        setError((err as Error).message || "Failed to create department");
+        setError(t((err as Error).message || "Failed to create department"));
       }
     },
-    [onDepartmentAdded]
+    [onDepartmentAdded, t]
   );
 
   return (
@@ -49,12 +51,12 @@ export function AddDepartment({
       {({ form, renderSubmitButton }) => (
         <Group align="flex-start">
           <TextInput
-            placeholder="Nombre del area"
+            placeholder={t("sections.departments.placeholders.departmentName")}
             {...form.getInputProps("name")}
             error={error}
           />
           {renderSubmitButton({
-            text: "Crear area",
+            text: t("sections.departments.buttons.createDepartment"),
             disableIfInvalid: true,
             rightSection: <icons.Add />,
             color: "green",

@@ -8,12 +8,14 @@ import { zodResolver } from "@mantine/form";
 import { useCallback, useState } from "react";
 import { CreateCompany } from "../../services/CompaniesService";
 import { icons } from "../../assets";
+import { useTranslation } from "react-i18next";
 
 export type AddCompanyProps = {
   onCompanyAdded: () => Promise<void>;
 };
 
 export function AddCompany({ onCompanyAdded }: AddCompanyProps) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const initialValues: CreateCompanyRequest = {
@@ -27,10 +29,10 @@ export function AddCompany({ onCompanyAdded }: AddCompanyProps) {
         await CreateCompany(request);
         await onCompanyAdded();
       } catch (err) {
-        setError((err as Error).message || "Failed to create company");
+        setError(t((err as Error).message || "Failed to create company"));
       }
     },
-    [onCompanyAdded]
+    [onCompanyAdded, t]
   );
 
   return (
@@ -43,12 +45,12 @@ export function AddCompany({ onCompanyAdded }: AddCompanyProps) {
       {({ form, renderSubmitButton }) => (
         <Group align="flex-start">
           <TextInput
-            placeholder="Nombre de la empresa"
+            placeholder={t("sections.company.placeholders.companyName")}
             {...form.getInputProps("name")}
             error={error}
           />
           {renderSubmitButton({
-            text: "Crear empresa",
+            text: t("sections.company.buttons.createCompany"),
             disableIfInvalid: true,
             rightSection: <icons.Add />,
             color: "green",

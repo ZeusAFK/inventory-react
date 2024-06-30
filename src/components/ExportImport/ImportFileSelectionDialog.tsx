@@ -6,13 +6,15 @@ import { LocalStorageService } from "../../services/LocalStorageService";
 import { FileImportInput } from "../FileImportInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { modals } from "@mantine/modals";
+import { useTranslation } from "react-i18next";
 
 export function ImportFileSelectionDialog() {
+  const { i18n } = useTranslation();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const acceptedFileTypes = [".json"];
+  const acceptedFileTypes = [".zip"];
   const maxFileSize = 2048 * 1024;
 
   const onFileSelected = useCallback((file: File) => {
@@ -32,6 +34,8 @@ export function ImportFileSelectionDialog() {
           icon: <icons.Success />,
         });
         queryClient.invalidateQueries();
+        const savedLanguage = localStorage.getItem("language") || i18n.language;
+        i18n.changeLanguage(savedLanguage);
       })
       .catch((error) => {
         notifications.show({
@@ -44,7 +48,7 @@ export function ImportFileSelectionDialog() {
         setLoading(false);
         modals.closeAll();
       });
-  }, [queryClient, selectedFile]);
+  }, [i18n, queryClient, selectedFile]);
 
   return (
     <Stack>

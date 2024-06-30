@@ -1,10 +1,13 @@
+import JSZip from "jszip";
+
 export type StorageKey =
   | "companies"
   | "departments"
   | "inventory"
   | "items"
   | "activeCompany"
-  | "activeDepartment";
+  | "activeDepartment"
+  | "language";
 
 export class LocalStorageService {
   static getItem<T>(key: StorageKey): T | null {
@@ -25,7 +28,7 @@ export class LocalStorageService {
     localStorage.removeItem(key);
   }
 
-  static exportStorage(exportKeys: StorageKey[]): File {
+  static async exportStorage(exportKeys: StorageKey[]): Promise<File> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const exportData: { [key in StorageKey]?: any } = {};
 
@@ -40,27 +43,35 @@ export class LocalStorageService {
       }
     });
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `inventory ${timestamp}.json`;
+    const zip = new JSZip();
+    zip.file("data.json", JSON.stringify(exportData, null, 2));
 
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
-    });
-    return new File([blob], filename, {
-      type: "application/json",
-    });
+    const blob = await zip.generateAsync({ type: "blob" });
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = `inventory ${timestamp}.zip`;
+
+    return new File([blob], filename, { type: "application/zip" });
   }
 
   static importStorage(file: File): Promise<void> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         try {
-          const importData = JSON.parse(event.target?.result as string);
-          Object.keys(importData).forEach((key) => {
-            localStorage.setItem(key, JSON.stringify(importData[key]));
-          });
-          resolve();
+          const zip = await JSZip.loadAsync(
+            event.target?.result as ArrayBuffer
+          );
+          const jsonFile = zip.file("data.json");
+          if (jsonFile) {
+            const content = await jsonFile.async("string");
+            const importData = JSON.parse(content);
+            Object.keys(importData).forEach((key) => {
+              localStorage.setItem(key, JSON.stringify(importData[key]));
+            });
+            resolve();
+          } else {
+            reject(new Error("No data.json file found in the zip"));
+          }
         } catch (error) {
           reject(new Error("Failed to parse import file"));
         }
@@ -68,7 +79,7 @@ export class LocalStorageService {
       reader.onerror = () => {
         reject(new Error("Failed to read import file"));
       };
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     });
   }
 }
