@@ -17,6 +17,7 @@ export function ExportImportSection() {
       "departments",
       "inventory",
       "items",
+      "units",
       "activeCompany",
       "activeDepartment",
       "language",
@@ -40,14 +41,14 @@ export function ExportImportSection() {
   }, []);
 
   return (
-    <Group>
+    <Group mx={5}>
       <Button
         size="xs"
         color="green"
         leftSection={<icons.Export />}
         onClick={handleExport}
       >
-        {t("buttons.import")}
+        {t("buttons.export")}
       </Button>
       <Button
         size="xs"
@@ -55,7 +56,7 @@ export function ExportImportSection() {
         leftSection={<icons.Import />}
         onClick={handleImport}
       >
-        {t("buttons.export")}
+        {t("buttons.import")}
       </Button>
     </Group>
   );

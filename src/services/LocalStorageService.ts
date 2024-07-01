@@ -5,6 +5,7 @@ export type StorageKey =
   | "departments"
   | "inventory"
   | "items"
+  | "units"
   | "activeCompany"
   | "activeDepartment"
   | "language";

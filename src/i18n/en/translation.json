@@ -10,7 +10,8 @@
     "companies": "Companies",
     "departments": "Departments",
     "items": "Items",
-    "inventory": "Inventory"
+    "inventory": "Inventory",
+    "config": "Parameters"
   },
   "sections": {
     "company": {
@@ -79,6 +80,75 @@
         "title": "Edit {{department}}",
         "labels": {
           "name": "Name"
+        }
+      }
+    },
+    "parameters": {
+      "units": {
+        "title": "Units",
+        "unknowUnit": "UNIT",
+        "headers": {
+          "name": "Unit",
+          "actions": "Actions"
+        },
+        "placeholders": {
+          "name": "Unit Name"
+        },
+        "buttons": {
+          "createUnit": "Create Unit",
+          "deleteUnit": "Delete Unit"
+        },
+        "delete": {
+          "title": "Delete Unit",
+          "warning": "Are you sure you want to delete this unit? This will also delete all associated data."
+        },
+        "edit": {
+          "title": "Edit {{unit}}",
+          "labels": {
+            "name": "Name"
+          }
+        }
+      }
+    },
+    "items": {
+      "title": "Manage Items",
+      "createFirstUnitWarning": "You must create at least one unit in the parameters section",
+      "headers": {
+        "description": "Description",
+        "category": "Category",
+        "unit": "Unit of Measure",
+        "actions": "Actions"
+      },
+      "buttons": {
+        "createItem": "Create Item",
+        "deleteItem": "Delete Item"
+      },
+      "categories": {
+        "office": "Office",
+        "cafeteria": "Cafeteria",
+        "cleaning": "Cleaning",
+        "stationery": "Stationery"
+      },
+      "placeholders": {
+        "description": "Enter item description"
+      },
+      "create": {
+        "title": "Create New Item",
+        "labels": {
+          "category": "Category",
+          "description": "Description",
+          "unit": "Unit of Measure"
+        }
+      },
+      "delete": {
+        "title": "Delete Item",
+        "warning": "Are you sure you want to delete this item? This will also delete all associated data."
+      },
+      "edit": {
+        "labels": {
+          "category": "Category",
+          "description": "Description",
+          "unit": "Unit of Measure"
         }
       }
     }

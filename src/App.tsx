@@ -69,25 +69,36 @@ function App() {
   }
 
   return (
-    <AppShell header={{ height: 60 }}>
+    <AppShell header={{ height: 50 }}>
       <AppShell.Header>
-        <Group m={15} justify="space-between">
+        <Group m={10}>
+          <icons.Logo size={30} />
+          <Title order={4}>{t("title")}</Title>
+          {activeCompany.company !== null && (
+            <Badge variant="dot" color="green" size="lg">
+              {activeCompany.company.name}
+            </Badge>
+          )}
+          {activeDepartment.department !== null && (
+            <Badge variant="dot" color="green" size="lg">
+              {activeDepartment.department.name}
+            </Badge>
+          )}
+        </Group>
+      </AppShell.Header>
+
+      <AppShell.Main>
+        <MainPage
+          activeCompany={activeCompany.company}
+          activeDepartment={activeDepartment.department}
+          onActivateCompany={handleActivateCompany}
+          onActivateDepartment={handleActivateDepartment}
+        />
+      </AppShell.Main>
+      <AppShell.Footer>
+        <Group justify="space-between">
+          <ExportImportSection />
           <Group>
-            <icons.Logo size={30} />
-            <Title order={3}>{t("title")}</Title>
-            {activeCompany.company !== null && (
-              <Badge variant="dot" color="green" size="xl">
-                {activeCompany.company.name}
-              </Badge>
-            )}
-            {activeDepartment.department !== null && (
-              <Badge variant="dot" color="green" size="xl">
-                {activeDepartment.department.name}
-              </Badge>
-            )}
-          </Group>
-          <Group>
-            <ExportImportSection />
             <LanguageSwitcher />
             <ActionIcon
               onClick={switchColorScheme}
@@ -102,16 +113,7 @@ function App() {
             </ActionIcon>
           </Group>
         </Group>
-      </AppShell.Header>
-
-      <AppShell.Main>
-        <MainPage
-          activeCompany={activeCompany.company}
-          activeDepartment={activeDepartment.department}
-          onActivateCompany={handleActivateCompany}
-          onActivateDepartment={handleActivateDepartment}
-        />
-      </AppShell.Main>
+      </AppShell.Footer>
     </AppShell>
   );
 }

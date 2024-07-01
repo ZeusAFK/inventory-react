@@ -12,6 +12,9 @@ export {
   IoCloudUpload as Import,
   IoCheckmark as Success,
   IoLanguage as Language,
+  IoCog as Config,
+  IoSearch as Search,
+  IoClose as Close,
 } from "react-icons/io5";
 
 export {

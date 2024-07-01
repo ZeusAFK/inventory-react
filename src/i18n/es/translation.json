@@ -8,9 +8,10 @@
   "title": "Gestión de inventario",
   "tabs": {
     "companies": "Empresas",
-    "departments": "Areas",
-    "items": "Articulos",
-    "inventory": "Inventario"
+    "departments": "Áreas",
+    "items": "Artículos",
+    "inventory": "Inventario",
+    "config": "Parámetros"
   },
   "sections": {
     "company": {
@@ -46,11 +47,11 @@
       },
       "delete": {
         "title": "Eliminar empresa",
-        "warning": "Estas seguro que deseas eliminar esta empresa? Esto también eliminara todos los datos asociados a la misma."
+        "warning": "¿Estás seguro que deseas eliminar esta empresa? Esto también eliminará todos los datos asociados a la misma."
       }
     },
     "departments": {
-      "title": "Administrar areas en {{company}}",
+      "title": "Administrar áreas en {{company}}",
       "headers": {
         "name": "Nombre",
         "active": "Activar",
@@ -61,24 +62,93 @@
         "activate": "Activar"
       },
       "errors": {
-        "departmentAlreadyExists": "Ya existe un departamento con el nombre especificado",
-        "departmentNotFound": "Departamento no encontrado"
+        "departmentAlreadyExists": "Ya existe un área con el nombre especificado",
+        "departmentNotFound": "Área no encontrada"
       },
       "buttons": {
-        "deleteDepartment": "Eliminar area",
-        "createDepartment": "Crear area"
+        "deleteDepartment": "Eliminar área",
+        "createDepartment": "Crear área"
       },
       "placeholders": {
-        "departmentName": "Nombre del area"
+        "departmentName": "Nombre del área"
       },
       "delete": {
-        "title": "Eliminar area",
-        "warning": "Estas seguro que deseas eliminar esta area? Esto también eliminara todos los datos asociados a la misma."
+        "title": "Eliminar área",
+        "warning": "¿Estás seguro que deseas eliminar esta área? Esto también eliminará todos los datos asociados a la misma."
       },
       "edit": {
         "title": "Editar {{department}}",
         "labels": {
           "name": "Nombre"
+        }
+      }
+    },
+    "parameters": {
+      "units": {
+        "title": "Unidades",
+        "unknowUnit": "UNIDAD",
+        "headers": {
+          "name": "Unidad",
+          "actions": "Acciones"
+        },
+        "placeholders": {
+          "name": "Nombre de la unidad"
+        },
+        "buttons": {
+          "createUnit": "Crear unidad",
+          "deleteUnit": "Eliminar unidad"
+        },
+        "delete": {
+          "title": "Eliminar unidad",
+          "warning": "¿Estás seguro que deseas eliminar esta unidad? Esto también eliminará todos los datos asociados a la misma."
+        },
+        "edit": {
+          "title": "Editar {{unit}}",
+          "labels": {
+            "name": "Nombre"
+          }
+        }
+      }
+    },
+    "items": {
+      "title": "Administrar artículos",
+      "createFirstUnitWarning": "Debes crear al menos una unidad en la sección de parametros",
+      "headers": {
+        "description": "Descripción",
+        "category": "Categoría",
+        "unit": "Unidad de medida",
+        "actions": "Acciones"
+      },
+      "buttons": {
+        "createItem": "Crear artículo",
+        "deleteItem": "Eliminar artículo"
+      },
+      "categories": {
+        "office": "Oficina",
+        "cafeteria": "Cafetería",
+        "cleaning": "Limpieza",
+        "stationery": "Escritorio"
+      },
+      "placeholders": {
+        "description": "Ingrese la descripción del artículo"
+      },
+      "create": {
+        "title": "Crear nuevo artículo",
+        "labels": {
+          "category": "Categoría",
+          "description": "Descripción",
+          "unit": "Unidad de medida"
+        }
+      },
+      "delete": {
+        "title": "Eliminar artículo",
+        "warning": "¿Estás seguro que deseas eliminar este artículo? Esto también eliminará todos los datos asociados al mismo."
+      },
+      "edit": {
+        "labels": {
+          "category": "Categoría",
+          "description": "Descripción",
+          "unit": "Unidad de medida"
         }
       }
     }

@@ -60,7 +60,7 @@ export function CompaniesList({
             .catch((err) => {
               notifications.show({
                 color: "red",
-                message: err.message || "Failed to create company",
+                message: err.message || "Failed to delete company",
                 icon: <icons.Error />,
               });
             })

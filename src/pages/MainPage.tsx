@@ -6,6 +6,8 @@ import { Guid } from "../models/types";
 import { DepartmentsSection } from "../components/Departments";
 import { Department } from "../models/department";
 import { useTranslation } from "react-i18next";
+import { ParametersSection } from "../components/Parameters";
+import { ItemsSection } from "../components/Items";
 
 export type MainPageProps = {
   activeCompany: Company | null;
@@ -45,6 +47,9 @@ export function MainPage({
           >
             {t("tabs.inventory")}
           </Tabs.Tab>
+          <Tabs.Tab value="parameters" leftSection={<icons.Config />}>
+            {t("tabs.config")}
+          </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="companies" py="lg" px="sm">
@@ -67,11 +72,15 @@ export function MainPage({
         </Tabs.Panel>
 
         <Tabs.Panel value="items" py="lg" px="sm">
-          Items tab content
+          <ItemsSection />
         </Tabs.Panel>
 
         <Tabs.Panel value="inventory" py="lg" px="sm">
           Inventory tab content
+        </Tabs.Panel>
+
+        <Tabs.Panel value="parameters" py="lg" px="sm">
+          <ParametersSection />
         </Tabs.Panel>
       </Tabs>
     </Container>

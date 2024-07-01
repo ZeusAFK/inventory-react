@@ -11,10 +11,14 @@ import {
 } from "../models/department";
 import { LocalStorageService, StorageKey } from "./LocalStorageService";
 import { Guid } from "../models/types";
+import { CreateUnitRequest, Unit, UpdateUnitRequest } from "../models/units";
+import { CreateItemRequest, Item, UpdateItemRequest } from "../models/item";
 
 export class StorageService {
   private static readonly COMPANY_STORAGE_KEY: StorageKey = "companies";
   private static readonly DEPARTMENT_STORAGE_KEY: StorageKey = "departments";
+  private static readonly UNIT_STORAGE_KEY: StorageKey = "units";
+  private static readonly ITEM_STORAGE_KEY: StorageKey = "items";
 
   static setActiveCompany(companyId: Guid): void {
     LocalStorageService.setItem("activeCompany", companyId);
@@ -57,7 +61,7 @@ export class StorageService {
     );
   }
 
-  static deleteCompany(companyId: string): void {
+  static deleteCompany(companyId: Guid): void {
     let companies = this.getCompanies();
     companies = companies.filter((company) => company.id !== companyId);
     LocalStorageService.setItem(this.COMPANY_STORAGE_KEY, companies);
@@ -145,7 +149,7 @@ export class StorageService {
     return companyDepartments;
   }
 
-  static deleteDepartment(departmentId: string): void {
+  static deleteDepartment(departmentId: Guid): void {
     let departments = this.getDepartments();
     departments = departments.filter(
       (department) => department.id !== departmentId
@@ -177,5 +181,105 @@ export class StorageService {
     LocalStorageService.setItem(this.DEPARTMENT_STORAGE_KEY, departments);
 
     return departments[departmentIndex];
+  }
+
+  static getUnits(): Unit[] {
+    return LocalStorageService.getItem<Unit[]>(this.UNIT_STORAGE_KEY) || [];
+  }
+
+  static createUnit(request: CreateUnitRequest): Unit {
+    const units = this.getUnits() || [];
+
+    const existingUnit = units.find((x) => x.name === request.name);
+    if (existingUnit) {
+      throw new Error("sections.units.errors.unitAlreadyExists");
+    }
+
+    const unit: Unit = { id: uuid(), name: request.name };
+    units.push(unit);
+    LocalStorageService.setItem(this.UNIT_STORAGE_KEY, units);
+    return unit;
+  }
+
+  static updateUnit(request: UpdateUnitRequest): Unit {
+    const units = this.getUnits();
+
+    const unitIndex = units.findIndex((unit) => unit.id === request.id);
+    if (unitIndex === -1) {
+      throw new Error("sections.units.errors.unitNotFound");
+    }
+
+    const existingUnitWithName = units.find(
+      (unit) => unit.name === request.name && unit.id !== request.id
+    );
+    if (existingUnitWithName) {
+      throw new Error("sections.units.errors.unitAlreadyExists");
+    }
+
+    units[unitIndex].name = request.name;
+    LocalStorageService.setItem(this.UNIT_STORAGE_KEY, units);
+
+    return units[unitIndex];
+  }
+
+  static deleteUnit(unitId: Guid): void {
+    let units = this.getUnits();
+    units = units.filter((unit) => unit.id !== unitId);
+    LocalStorageService.setItem(this.UNIT_STORAGE_KEY, units);
+  }
+
+  static createItem(request: CreateItemRequest): Item {
+    const items = this.getItems() || [];
+
+    const existingItem = items.find(
+      (x) => x.description === request.description
+    );
+    if (existingItem) {
+      throw new Error("sections.items.errors.itemAlreadyExists");
+    }
+
+    const item: Item = {
+      id: uuid(),
+      category: request.category,
+      description: request.description,
+      unit: request.unit,
+    };
+    items.push(item);
+    LocalStorageService.setItem(this.ITEM_STORAGE_KEY, items);
+    return item;
+  }
+
+  static updateItem(request: UpdateItemRequest): Item {
+    const items = this.getItems();
+
+    const itemIndex = items.findIndex((item) => item.id === request.id);
+    if (itemIndex === -1) {
+      throw new Error("sections.items.errors.itemNotFound");
+    }
+
+    const existingItemWithDescription = items.find(
+      (item) =>
+        item.description === request.description && item.id !== request.id
+    );
+    if (existingItemWithDescription) {
+      throw new Error("sections.items.errors.itemAlreadyExists");
+    }
+
+    items[itemIndex].category = request.category;
+    items[itemIndex].description = request.description;
+    items[itemIndex].unit = request.unit;
+    LocalStorageService.setItem(this.ITEM_STORAGE_KEY, items);
+
+    return items[itemIndex];
+  }
+
+  static deleteItem(itemId: Guid): void {
+    let items = this.getItems();
+    items = items.filter((item) => item.id !== itemId);
+    LocalStorageService.setItem(this.ITEM_STORAGE_KEY, items);
+  }
+
+  static getItems(): Item[] {
+    return LocalStorageService.getItem<Item[]>(this.ITEM_STORAGE_KEY) || [];
   }
 }
