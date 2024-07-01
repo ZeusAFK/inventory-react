@@ -60,7 +60,7 @@ export function ItemsSection() {
     <Stack>
       <Group justify="space-between">
         <Group>
-          <icons.Company size={20} />
+          <icons.Item size={20} />
           <Title order={3}>{t("sections.items.title")}</Title>
         </Group>
         <Button leftSection={<icons.Add />} onClick={handleCreateItem}>

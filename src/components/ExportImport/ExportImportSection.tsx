@@ -15,8 +15,8 @@ export function ExportImportSection() {
     const exportKeys: StorageKey[] = [
       "companies",
       "departments",
-      "inventory",
       "items",
+      "inventory",
       "units",
       "activeCompany",
       "activeDepartment",

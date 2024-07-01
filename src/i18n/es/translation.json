@@ -151,6 +151,51 @@
           "unit": "Unidad de medida"
         }
       }
+    },
+    "inventory": {
+      "title": "Administrar inventario en {{company}} - {{department}}",
+      "errors": {
+        "inventoryAlreadyExists": "Ya existe un registro de este artículo en el área actual"
+      },
+      "placeholders": {
+        "date": "Fecha",
+        "quantity": "Cantidad",
+        "item": "Artículo"
+      },
+      "buttons": {
+        "createInventory": "Registrar inventario",
+        "deleteInventory": "Eliminar inventario",
+        "updateInventory": "Editar inventario"
+      },
+      "headers": {
+        "item": "Artículo",
+        "category": "Categoría",
+        "quantity": "Cantidad",
+        "date": "Fecha",
+        "actions": "Acciones"
+      },
+      "create": {
+        "title": "Registrar inventario",
+        "labels": {
+          "item": "Artículo",
+          "quantity": "Cantidad",
+          "date": "Fecha"
+        },
+        "placeholders": {
+          "item": "Buscar artículo"
+        }
+      },
+      "delete": {
+        "title": "Eliminar inventario",
+        "warning": "¿Estás seguro que deseas eliminar este registro de inventario?"
+      },
+      "edit": {
+        "title": "Editar inventario",
+        "labels": {
+          "quantity": "Cantidad",
+          "date": "Fecha"
+        }
+      }
     }
   }
 }

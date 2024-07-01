@@ -8,6 +8,7 @@ import { Department } from "../models/department";
 import { useTranslation } from "react-i18next";
 import { ParametersSection } from "../components/Parameters";
 import { ItemsSection } from "../components/Items";
+import { InventorySection } from "../components/Inventory";
 
 export type MainPageProps = {
   activeCompany: Company | null;
@@ -76,7 +77,14 @@ export function MainPage({
         </Tabs.Panel>
 
         <Tabs.Panel value="inventory" py="lg" px="sm">
-          Inventory tab content
+          {activeCompany != null && activeDepartment != null ? (
+            <InventorySection
+              activeCompany={activeCompany}
+              activeDepartment={activeDepartment}
+            />
+          ) : (
+            <></>
+          )}
         </Tabs.Panel>
 
         <Tabs.Panel value="parameters" py="lg" px="sm">

@@ -5,6 +5,7 @@ import "./index.css";
 import "@mantine/core/styles.css";
 import "@mantine/core/styles.layer.css";
 import "mantine-datatable/styles.layer.css";
+import "@mantine/dates/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

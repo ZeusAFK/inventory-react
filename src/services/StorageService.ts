@@ -13,12 +13,18 @@ import { LocalStorageService, StorageKey } from "./LocalStorageService";
 import { Guid } from "../models/types";
 import { CreateUnitRequest, Unit, UpdateUnitRequest } from "../models/units";
 import { CreateItemRequest, Item, UpdateItemRequest } from "../models/item";
+import {
+  CreateInventoryRequest,
+  Inventory,
+  UpdateInventoryRequest,
+} from "../models/inventory";
 
 export class StorageService {
   private static readonly COMPANY_STORAGE_KEY: StorageKey = "companies";
   private static readonly DEPARTMENT_STORAGE_KEY: StorageKey = "departments";
   private static readonly UNIT_STORAGE_KEY: StorageKey = "units";
   private static readonly ITEM_STORAGE_KEY: StorageKey = "items";
+  private static readonly INVENTORY_STORAGE_KEY: StorageKey = "inventory";
 
   static setActiveCompany(companyId: Guid): void {
     LocalStorageService.setItem("activeCompany", companyId);
@@ -281,5 +287,69 @@ export class StorageService {
 
   static getItems(): Item[] {
     return LocalStorageService.getItem<Item[]>(this.ITEM_STORAGE_KEY) || [];
+  }
+
+  static createInventory(request: CreateInventoryRequest): Inventory {
+    const inventoryItems = this.getInventory() || [];
+
+    const existingInventory = inventoryItems.find(
+      (item) =>
+        item.itemId === request.itemId &&
+        item.departmentId === request.departmentId
+    );
+    if (existingInventory) {
+      throw new Error("sections.inventory.errors.inventoryAlreadyExists");
+    }
+
+    const inventory: Inventory = {
+      id: uuid(),
+      itemId: request.itemId,
+      departmentId: request.departmentId,
+      quantity: request.quantity,
+      date: new Date(request.date),
+    };
+    inventoryItems.push(inventory);
+    LocalStorageService.setItem(this.INVENTORY_STORAGE_KEY, inventoryItems);
+    return inventory;
+  }
+
+  static getInventory(): Inventory[] {
+    return (
+      LocalStorageService.getItem<Inventory[]>(this.INVENTORY_STORAGE_KEY) || []
+    );
+  }
+
+  static getInventoryByDepartment(departmentId: Guid): Inventory[] {
+    const inventoryItems =
+      LocalStorageService.getItem<Inventory[]>(this.INVENTORY_STORAGE_KEY) ||
+      [];
+    const departmentInventory = inventoryItems.filter(
+      (x) => x.departmentId === departmentId
+    );
+
+    return departmentInventory;
+  }
+
+  static deleteInventory(inventoryId: Guid): void {
+    let inventoryItems = this.getInventory();
+    inventoryItems = inventoryItems.filter((item) => item.id !== inventoryId);
+    LocalStorageService.setItem(this.INVENTORY_STORAGE_KEY, inventoryItems);
+  }
+
+  static updateInventory(request: UpdateInventoryRequest): Inventory {
+    const inventoryItems = this.getInventory();
+
+    const inventoryIndex = inventoryItems.findIndex(
+      (item) => item.id === request.id
+    );
+    if (inventoryIndex === -1) {
+      throw new Error("sections.inventory.errors.inventoryNotFound");
+    }
+
+    inventoryItems[inventoryIndex].quantity = request.quantity;
+    inventoryItems[inventoryIndex].date = new Date(request.date);
+    LocalStorageService.setItem(this.INVENTORY_STORAGE_KEY, inventoryItems);
+
+    return inventoryItems[inventoryIndex];
   }
 }
